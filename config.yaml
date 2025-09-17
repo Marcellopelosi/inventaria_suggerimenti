@@ -1,0 +1,2 @@
+generative: "https://py.demoinventaria.it/generate-image"
+db: "https://backend.demoinventaria.it/api/materials"
