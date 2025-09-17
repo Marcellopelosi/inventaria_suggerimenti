@@ -8,9 +8,8 @@
     html, body {
       margin: 0;
       padding: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
+      width: 100%;
+      min-height: 100vh;
       background: white;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: #333;
@@ -18,40 +17,30 @@
 
     body {
       display: flex;
-      align-items: center;
       justify-content: center;
-    }
-
-    #scale-wrapper {
-      transform-origin: top left;
-      position: absolute;
-      top: 0;
-      left: 0;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     .container {
-      width: 1400px;
-      height: 900px;
-      box-sizing: border-box;
-      padding: 20px;
+      width: 100%;
+      max-width: 1400px;
       display: flex;
       flex-direction: column;
+      gap: 20px;
     }
 
     h1 {
       text-align: center;
-      font-size: 2.5em;
+      font-size: clamp(1.8rem, 2.5vw, 2.5rem);
       color: #2d3748;
       margin-bottom: 20px;
-      flex-shrink: 0;
     }
 
     .grid-2x3 {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      flex-grow: 1;
     }
 
     .image-card, .table-card {
@@ -62,18 +51,18 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
     }
 
     .image-card h3, .table-card h3 {
       margin-bottom: 10px;
-      font-size: 1em;
+      font-size: 1.1em;
       color: #4a5568;
+      text-align: center;
     }
 
     .image-card img {
       width: 100%;
-      height: 200px;
+      max-height: 200px;
       object-fit: contain;
       border-radius: 10px;
       border: 2px solid #e2e8f0;
@@ -120,10 +109,9 @@
 
     .button-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 20px;
       margin-top: 20px;
-      flex-shrink: 0;
     }
 
     .btn {
@@ -157,74 +145,50 @@
   </style>
 </head>
 <body>
-  <div id="scale-wrapper">
-    <div class="container">
-      <h1>Riepilogo della selezione e alternative ecologiche🌱</h1>
+  <div class="container">
+    <h1>Riepilogo della selezione e alternative ecologiche🌱</h1>
 
-      <section class="grid-2x3">
-        <div class="image-card">
-          <h3>Il tuo Capo</h3>
-          <img src="{{ feedback_photo_url }}" alt="User Feedback Photo"
-               onerror="this.onerror=null;this.src='{{ placeholder_image_url }}';">
-        </div>
-
-        <div class="image-card">
-          <h3>Proposta alternativa n°1</h3>
-          <img src="{{ generated_image_1_url }}" alt="Generated Proposal 1">
-        </div>
-
-        <div class="image-card">
-          <h3>Proposta alternativa n°2</h3>
-          <img src="{{ generated_image_2_url }}" alt="Generated Proposal 2">
-        </div>
-
-        <div class="table-card">
-          <h3>Le tue selezioni</h3>
-          <div id="table-1-container"></div>
-        </div>
-
-        <div class="table-card">
-          <h3>Selezione alternativa n°1</h3>
-          <div id="table-2-container"></div>
-        </div>
-
-        <div class="table-card">
-          <h3>Selezione alternativa n°2</h3>
-          <div id="table-3-container"></div>
-        </div>
-      </section>
-
-      <div class="button-row">
-        <button class="btn btn-red" onclick="location.href='success.html'">Procedi</button>
-        <button class="btn btn-green" onclick="location.href='success.html'">Procedi</button>
-        <button class="btn btn-green" onclick="location.href='success.html'">Procedi</button>
+    <section class="grid-2x3">
+      <div class="image-card">
+        <h3>Il tuo Capo</h3>
+        <img src="{{ feedback_photo_url }}" alt="User Feedback Photo"
+             onerror="this.onerror=null;this.src='{{ placeholder_image_url }}';">
       </div>
+
+      <div class="image-card">
+        <h3>Proposta alternativa n°1</h3>
+        <img src="{{ generated_image_1_url }}" alt="Generated Proposal 1">
+      </div>
+
+      <div class="image-card">
+        <h3>Proposta alternativa n°2</h3>
+        <img src="{{ generated_image_2_url }}" alt="Generated Proposal 2">
+      </div>
+
+      <div class="table-card">
+        <h3>Le tue selezioni</h3>
+        <div id="table-1-container"></div>
+      </div>
+
+      <div class="table-card">
+        <h3>Selezione alternativa n°1</h3>
+        <div id="table-2-container"></div>
+      </div>
+
+      <div class="table-card">
+        <h3>Selezione alternativa n°2</h3>
+        <div id="table-3-container"></div>
+      </div>
+    </section>
+
+    <div class="button-row">
+      <button class="btn btn-red" onclick="location.href='success.html'">Procedi</button>
+      <button class="btn btn-green" onclick="location.href='success.html'">Procedi</button>
+      <button class="btn btn-green" onclick="location.href='success.html'">Procedi</button>
     </div>
   </div>
 
   <script>
-    function scaleLayout() {
-      const wrapper = document.getElementById('scale-wrapper');
-      const container = wrapper.firstElementChild;
-
-      const scaleX = window.innerWidth / container.offsetWidth;
-      const scaleY = window.innerHeight / container.offsetHeight;
-
-      const scale = Math.min(scaleX, scaleY);
-
-      wrapper.style.transform = `scale(${scale})`;
-
-      // Per centrare perfettamente
-      const offsetX = (window.innerWidth - container.offsetWidth * scale) / 2;
-      const offsetY = (window.innerHeight - container.offsetHeight * scale) / 2;
-
-      wrapper.style.left = `${offsetX}px`;
-      wrapper.style.top = `${offsetY}px`;
-    }
-
-    window.addEventListener('load', scaleLayout);
-    window.addEventListener('resize', scaleLayout);
-
     function generateStars(sustainabilityValue) {
       return `<span class="stars">${'★'.repeat(sustainabilityValue)}</span>`;
     }
